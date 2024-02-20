@@ -17,8 +17,8 @@ pipeline {
         stage('deploy kubernetes') {
             steps {
                 sh '''
-                kubectl create deployment pl-bulk-prod --image=jeongmin1234/cicdtest:pink
-                kubectl expose deployment pl-bulk-prod --type=LoadBalancer --port=8080 --target-port=80 --name=pl-bulk-prod
+                kubectl create deployment myweb2 --image=jeongmin1234/cicdtest:pink
+                kubectl expose deployment myweb2 --type=LoadBalancer --port=80 --target-port=8080 --name=myweb2
                 '''
             }
         }
