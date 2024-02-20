@@ -18,7 +18,7 @@ pipeline {
             steps {
                 sh '''
                 ansible master -m command -a 'kubectl create deployment myweb2 --image=jeongmin1234/cicdtest:pink'
-                ansible master -m command -a'kubectl expose deployment myweb2 --type=LoadBalancer --port=80 --target-port=80 --name=myweb2'
+                ansible master -m command -a 'kubectl expose deployment myweb2 --type=LoadBalancer --port=80 --target-port=80 --name=myweb2'
                 '''
             }
         }
