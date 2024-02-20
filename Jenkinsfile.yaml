@@ -17,8 +17,8 @@ pipeline {
         stage('deploy kubernetes') {
             steps {
                 sh '''
-                kubectl create deployment myweb2 --image=jeongmin1234/cicdtest:pink
-                kubectl expose deployment myweb2 --type=LoadBalancer --port=80 --target-port=8080 --name=myweb2
+                ansible master -m command -a 'kubectl create deployment myweb2 --image=jeongmin1234/cicdtest:pink'
+                ansible master -m command -a'kubectl expose deployment myweb2 --type=LoadBalancer --port=80 --target-port=8080 --name=myweb2'
                 '''
             }
         }
