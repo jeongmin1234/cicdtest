@@ -1,26 +1,26 @@
 pipeline {
-    agent any
-    stages {
-        stage('git scm update') {
-            steps {
-                git url: 'https://github.com/jeongmin1234/cicdtest.git', branch: 'main'
-            }
-        }
-        stage('docker build and push') {
-            steps {
-                sh '''
-                sudo docker build -t jeongmin1234/cicdtest:pink .
-                sudo docker push jeongmin1234/cicdtest:pink
-                '''
-            }
-        }
-        stage('deploy kubernetes') {
-            steps {
-                sh '''
-                ansible master -m command -a 'kubectl create deployment myweb2 --image=jeongmin1234/cicdtest:pink'
-                ansible master -m command -a 'kubectl expose deployment myweb2 --type=LoadBalancer --port=80 --target-port=80 --name=myweb2'
-                '''
-            }
-        }
+  agent any
+  stages {
+    stage('git scm update') {
+      steps {
+        git url: 'https://github.com/jeongmin1234/cicdtest.git', branch: 'main'
+      }
     }
+    stage('docker build and push') {
+      steps {
+        sh '''
+        sudo docker build -t jeongmin1234/cicdtest:pink .
+        sudo docker push jeongmin1234/cicdtest:pink
+        '''
+      }
+    }
+    stage('deploy and service') {
+      steps {
+        sh '''
+        ansible master -m command -a 'kubectl create deploy web-pink --replicas=3 --image=jeongmin1234/cicdtest:pink'
+        ansible master -m command -a 'kubectl expose deploy web-pink --type=LoadBalancer --port=80 --target-port=80 --name=web-pink-svc'
+        '''
+      }
+    }
+  }
 }
